@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Many Marker - Cluster Marker</title>
+<script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer.js"></script>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&.js"></script>
+<script>
+var map = null;
+var markerArray = []; //create a global array to store markers
+var myPoints = [[19.055897, 72.834146, 'AnitaMourya.com Freelance web designer Mumbai'],[18.970797, 72.804738, 'AnitaMourya.com Freelance web designer Mumbai'],[18.959674, 72.814159, 'AnitaMourya.com Freelance web designer Mumbai'],[30.740977, 76.788652, 'AnitaMourya.com Freelance web designer Chandigarh'],[31.642896,74.862536, 'AnitaMourya.com Freelance web designer Punjab'],[28.566947,77.219678, 'AnitaMourya.com Freelance web designer Delhi'],[13.060699,80.250048, 'AnitaMourya.com Freelance web designer NUNGAMBAKKAM'],[13.001019,80.2693, 'AnitaMourya.com Freelance web designer Chennai'],[13.087822,80.210252, 'AnitaMourya.com Freelance web designer Chennai'],[43.193852,-71.572395, 'AnitaMourya.com Freelance web designer Chennai'],[28.396033,77.316648, 'AnitaMourya.com Freelance web designer Faridabad'], [17.389882,78.427099, 'AnitaMourya.com Freelance web designer HYDERABAD'], [12.927453,77.590597, 'AnitaMourya.com Freelance web designer BANGALORE'], [26.456986,74.637664, 'AnitaMourya.com Freelance web designer AJMER'], [15.496417,73.823516, 'AnitaMourya.com Freelance web designer GOA'], [15.271944,73.958333, 'AnitaMourya.com Freelance web designer GOA'], [15.532514,73.761037, 'AnitaMourya.com Freelance web designer GOA']]; //create global array to store points
+
+function initialize() {
+    var myOptions = {
+        zoom: 4,
+        center: new google.maps.LatLng(23.259933,77.412615),
+        mapTypeControl: true,
+        mapTypeControlOptions: {
+            style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
+        },
+        navigationControl: true,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    }
+    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+
+    var mcOptions = {
+        gridSize: 50,
+        maxZoom: 5
+    };
+    var mc = new MarkerClusterer(map, [], mcOptions);
+
+    google.maps.event.addListener(map, 'click', function() {
+        infowindow.close();
+    });
+
+    // Add markers to the map
+    // Set up markers based on the number of elements within the myPoints array
+    for(var i=0; i<myPoints.length; i++){
+         createMarker(new google.maps.LatLng(myPoints[i][0], myPoints[i][1]), myPoints[i][2], myPoints[i][3], myPoints[i][4], myPoints[i][5], myPoints[i][6], myPoints[i][7], myPoints[i][8], myPoints[i][9], myPoints[i][10], myPoints[i][11], myPoints[i][12], myPoints[i][13], myPoints[i][14], myPoints[i][15], myPoints[i][16]);
+    }
+    
+    mc.addMarkers(markerArray , true);
+}
+
+var infowindow = new google.maps.InfoWindow({
+    size: new google.maps.Size(150, 50)
+});
+
+function createMarker(latlng, html) {
+    var contentString = html;
+    var marker = new google.maps.Marker({
+        position: latlng,
+        map: map,
+        icon: 'http://www.anitamourya.com/library/map_pointer.png',
+        zIndex: Math.round(latlng.lat() * -100000) << 5
+    });
+
+    marker.setAnimation(google.maps.Animation.BOUNCE);
+    
+    google.maps.event.addListener(marker, 'click', function() {
+        infowindow.setContent(contentString);
+        infowindow.open(map, marker);
+    });
+    
+    markerArray.push(marker); //push local var marker into global array
+}
+
+window.onload = initialize;
+</script>
+<style>
+#map_canvas{
+  width: 500px;
+  height: 500px;
+}
+</style>
+</head>
+
+<body>
+<div id="map_canvas"></div>
+</body>
+</html>
